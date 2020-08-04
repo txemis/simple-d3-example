@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Static Template</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.3.13/d3.js"></script>
+  </head>
+  <body>
+    <h2>static template</h2>
+
+    <div id="container">
+      <svg width="600" height="60">
+        <!-- <g transform="translate(50, 50)"></g> -->
+      </svg>
+    </div>
+    <h2>static template2</h2>
+    <div id="container2">
+      <svg id="svg_donut" width="500" height="400"></svg>
+    </div>
+
+    <!--    <script type="text/jsx">  -->
+    <script>
+      //Transicciones:
+      d3.select("body")
+        .transition()
+        .delay(750)
+        .styleTween("color", function() {
+          return d3.interpolate("green", "red");
+        });
+
+      //También:
+      //.style("color", "yellow")
+      //.transition()
+      //.delay(750)
+      //.styleTween("color", function() { return d3.interpolate("green", "red");
+
+      var svg = d3.select("svg");
+      svg
+        .selectAll("circle")
+        .data([32, 57, 112])
+        .enter()
+        .append("circle")
+        .attr("cy", 40)
+        .attr("cx", function(d, i) {
+          return i * 100 + 30;
+        })
+        .attr("r", function(d) {
+          return Math.sqrt(d);
+        });
+
+      svg.selectAll("circle").attr("fill", "steelblue");
+
+      //      var circle = svg.selectAll("circle");
+      //      circle.style("fill", "steelblue");
+
+      //Añadir:
+      svg
+        .selectAll("circle")
+        /*        .data([32, 57, 112, 293], function(d) {
+                return d;
+              })
+      */
+        .data([32, 57, 112, 293])
+        .enter()
+        .append("circle")
+        .attr("cy", 40)
+        .attr("cx", function(d, i) {
+          return i * 100 + 30;
+        })
+        .attr("r", function(d) {
+          return Math.sqrt(d);
+        })
+        .attr("fill", "red")
+        .exit()
+        .remove();
+
+      //Quitar:
+      //      var circle = svg.selectAll("circle").data([32, 57]);
+      //      circle.exit().remove();
+      //o también encadenándolo:
+      //svg
+      //.selectAll("circles")
+      //.data([32, 57])
+      //.exit()
+      //.remove()
+
+      //Transiciones:
+    </script>
+
+    <script>
+      //Donuts:
+      /*
+      var vis = d3.select("#svg_donut");
+
+      var myScale = d3.scale
+        .linear()
+        .domain([0, 100])
+        .range([0, 2 * Math.PI]);
+
+      var arc = d3.svg
+        .arc()
+        .innerRadius(50)
+        .outerRadius(100)
+        .startAngle(myScale(-25))
+        //.startAngle(-Math.PI / 2)
+        .endAngle(myScale(25));
+      //.endAngle(Math.PI / 2);
+
+      vis
+        .append("path")
+        .attr("d", arc)
+        .attr("transform", "translate(100,100)")
+        .attr("fill", "green");
+
+*/
+      //otro arco con porciones:
+      var cScale = d3.scale
+        .linear()
+        .domain([0, 100])
+        .range([0, 2 * Math.PI]);
+
+      var data = [
+        [0, 50, "#AA8888"],
+        [50, 75, "#88BB88"],
+        [75, 100, "#8888CC"]
+      ];
+
+      var vis2 = d3.select("#svg_donut");
+
+      var arc2 = d3.svg
+        .arc()
+        .innerRadius(50)
+        .outerRadius(100)
+        .startAngle(function(d) {
+          return cScale(d[0]);
+        })
+        .endAngle(function(d) {
+          return cScale(d[1]);
+        });
+
+      vis2
+        .selectAll("path")
+        .data(data)
+        .enter()
+        .append("path")
+        .attr("d", arc2)
+        .style("fill", function(d) {
+          return d[2];
+        })
+        .attr("transform", "translate(400,100)");
+    </script>
+  </body>
+</html>
